@@ -35,12 +35,6 @@ app.get("/", (request, response) => {
     response.json(persons)
 })
 
-app.get("/info", (request, response) => {
-    const content = `Phonebook has info for ${persons.length} people\n${now}`
-    response.type("text/plain")  
-    response.send(content)
-})
-
 app.get("/api/persons/:id", (request, response) => {
     const foundPerson = persons.find(person => person.id === request.params.id)
     const body = request.body
@@ -65,6 +59,24 @@ app.delete("/api/persons/:id", (request, response) => {
     } else {
         response.status(404).json({error: "Person not found"}); // No person found with that ID
     }
+})
+
+app.put("/api/persons/:id", (request, response) => {
+    const body = request.body
+    const id = request.params.id
+    if (!body.name || !body.number) {
+        return response.status(400).json({
+            error: "no content found"
+        })
+    }
+    const addedPerson = {
+        id: id,
+        name: body.name,
+        number: body.number
+    }
+    const newPersons = persons.map(person => person.name === body.name ? addedPerson : person)
+    persons = newPersons
+    response.status(200).json(addedPerson)
 })
 
 app.post("/api/persons", (request, response) => {
