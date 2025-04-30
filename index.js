@@ -5,7 +5,7 @@ const cors = require('cors')
 const app = express()
 
 app.use(express.static('dist'))
-app.use(cors({ origin: "https://phonebookbe-szgd.onrender.com" }));
+app.use(cors());
 app.use(logger('tiny'));
 
 let persons = [
