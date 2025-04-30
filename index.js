@@ -32,7 +32,7 @@ let persons = [
 const now = new Date()
 app.use(express.json())
 
-app.get("/", (request, response) => {
+app.get("/api/persons", (request, response) => {
     response.json(persons)
 })
 
