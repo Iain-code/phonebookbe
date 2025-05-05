@@ -14,9 +14,6 @@ const now = new Date()
 
 app.get("/api/persons", (request, response) => {
     Person.find({}).then(results => {
-        results.forEach(result => {
-            console.log(result)
-        })
         response.json(results)
     }).catch(error => {
         console.error(error);
