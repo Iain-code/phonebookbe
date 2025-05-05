@@ -2,7 +2,7 @@ require('dotenv').config()
 const mongoose = require("mongoose");
 const Person = require("./models/Persons")
 
-const dbUrl = process.env.DBUrl
+const dbUrl = process.env.DB_URL
 
 mongoose
   .connect(dbUrl)
