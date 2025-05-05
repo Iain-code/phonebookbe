@@ -29,21 +29,13 @@ app.delete('/api/persons/:id', (request, response, next) => {
       .then((result) => {
         response.status(204).end()
       })
-      .catch((error) => next(error))
   })
 
 app.get("/api/persons/:id", (request, response) => {
-    const foundPerson = persons.find(person => person.id === request.params.id)
-    const body = request.body
-    console.log(request.params.id)
-
-    if (!foundPerson) {
-        response.status(400).json({
-            error: "content missing"
-        })
-    } else {
-    response.json(foundPerson)
-    }
+    Person.findById(request.params.id)
+      .then((result) => {
+        response.status(200).end()
+      })    
 })
 
 app.put("/api/persons/:id", (request, response) => {
@@ -78,22 +70,10 @@ app.post("/api/persons", (request, response) => {
             error: "no content found"
         })
     }
-    const found = persons.some(person => person.name === body.name)
-    if (found) {
-        return response.status(409).json({
-            error: "user already exists"
-        })
-    }
-    const generateId = () => {
-        const id = Math.floor(Math.random() * 1000000)
-        return id
-    }
     const addedPerson = new Person({
-        id: generateId().toString(),
         name: body.name,
         number: body.number
     })
-
     addedPerson.save().then(savedPerson => {
         response.json(savedPerson)
     })
