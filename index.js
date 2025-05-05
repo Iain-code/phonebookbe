@@ -3,7 +3,6 @@ const express = require("express")
 const logger = require('morgan');
 const cors = require('cors')
 const Person = require("./models/Persons");
-const connectDB = require("./mongo")
 
 const app = express()
 app.use(cors());
@@ -16,12 +15,7 @@ const dbUrl = `mongodb+srv://iainv1010:${password}@cluster0.kphy92i.mongodb.net/
 connectDB(dbUrl)
   .then(() => {
     console.log('Connected to MongoDB');
-    // Do other startup tasks like starting your server...
   })
-  .catch((error) => {
-    console.error('Could not connect to MongoDB', error);
-    process.exit(1);
-  });
 
 const now = new Date()
 
