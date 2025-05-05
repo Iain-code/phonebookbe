@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const Person = require('./models/Persons')
 
 const password = process.argv[2]
 const dbUrl = `mongodb+srv://iainv1010:${password}@cluster0.kphy92i.mongodb.net/phonebook?retryWrites=true&w=majority&appName=Cluster0`;
@@ -13,7 +14,6 @@ mongoose
     console.log('error connecting to MongoDB:', error.message)
   })
 
-
 if (process.argv.length < 3) {
     console.log("Input a password or command");
     process.exit(1);
@@ -22,7 +22,6 @@ const personSchema = new mongoose.Schema({
     name: String,
     number: String,
 })
-const Person = mongoose.model("Person", personSchema)
 
 if (process.argv.length === 3) {
 

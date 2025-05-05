@@ -3,7 +3,6 @@ const express = require("express")
 const logger = require('morgan');
 const cors = require('cors')
 const Person = require("./models/Persons");
-const { default: mongoose } = require('mongoose');
 
 const app = express()
 app.use(cors());
@@ -16,14 +15,17 @@ app.use(express.json())
 app.get("/api/persons", (request, response) => {
     Person.find({}).then(results => {
         results.forEach(result => {
-            response.json(result)
             console.log(result)
         })
+        response.json(results)
+    }).catch(error => {
+        console.error(error);
+        response.status(500).json({ error: 'An error occurred' });
     })
 })
 
-app.delete('/api/notes/:id', (request, response, next) => {
-    Note.findByIdAndDelete(request.params.id)
+app.delete('/api/persons/:id', (request, response, next) => {
+    Person.findByIdAndDelete(request.params.id)
       .then((result) => {
         response.status(204).end()
       })
