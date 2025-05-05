@@ -1,7 +1,9 @@
+require('dotenv').config()
 const express = require("express")
 const logger = require('morgan');
 const cors = require('cors')
-const Person = require("./models/Persons")
+const Person = require("./models/Persons");
+const { default: mongoose } = require('mongoose');
 
 const app = express()
 app.use(cors());
@@ -12,8 +14,12 @@ const now = new Date()
 app.use(express.json())
 
 app.get("/api/persons", (request, response) => {
-    Person.find({}).then(people => {
-        response.json(people)
+    Person.find({}).then(results => {
+        results.forEach(result => {
+            response.json(result)
+            console.log(result)
+        })  
+    mongoose.connection.close()
     })
 })
 
@@ -51,14 +57,20 @@ app.put("/api/persons/:id", (request, response) => {
             error: "no content found"
         })
     }
+    const exist = Person.findById(request.params.id).then(result)
+    if (exist) {
+        console.log("user already found")
+        response.json({
+            error: "user already in phonebook"
+        })
+    } else {
     const addedPerson = {
         id: id,
         name: body.name,
         number: body.number
     }
-    const newPersons = persons.map(person => person.name === body.name ? addedPerson : person)
-    persons = newPersons
     response.status(200).json(addedPerson)
+}
 })
 
 app.post("/api/persons", (request, response) => {
@@ -79,13 +91,15 @@ app.post("/api/persons", (request, response) => {
         const id = Math.floor(Math.random() * 1000000)
         return id
     }
-    const addedPerson = {
+    const addedPerson = new Person({
         id: generateId().toString(),
         name: body.name,
         number: body.number
-    }
-    persons = persons.concat(addedPerson);
-    response.status(201).json(addedPerson);
+    })
+
+    addedPerson.save().then(savedPerson => {
+        response.json(savedPerson)
+    })
 });
 
 const PORT = process.env.PORT || 3001
