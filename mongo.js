@@ -1,13 +1,8 @@
 const mongoose = require("mongoose");
 const Person = require("./models/Persons")
+require('dotenv').config()
 
-if (process.argv.length < 3) {
-    console.log("Input a password or command");
-    process.exit(1);
-}
-
-const password = "disturbed9"
-const dbUrl = `mongodb+srv://iainv1010:${password}@cluster0.kphy92i.mongodb.net/phonebook?retryWrites=true&w=majority&appName=Cluster0`;
+const dbUrl = process.env.dbUrl
 
 mongoose
   .connect(dbUrl)
@@ -18,7 +13,7 @@ mongoose
     console.log('error connecting to MongoDB:', error.message)
   })
 
-if (process.argv.length === 3) {
+if (process.argv.length === 2) {
 
 Person.find({}).then(result => {
     result.forEach(person => {
