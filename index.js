@@ -12,14 +12,16 @@ app.use(express.json())
 
 const now = new Date()
 
-app.get("/api/persons", (request, response) => {
-    Person.find({}).then(results => {
-        response.json(results)
-    }).catch(error => {
-        console.error(error);
-        response.status(500).json({ error: 'An error occurred' });
-    })
-})
+app.get('/api/persons', (req, res) => {
+    Person.find({})
+      .then(results => {
+        res.json(results);
+      })
+      .catch(error => {
+        console.error('Error fetching persons:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
+      });
+  });
 
 app.delete('/api/persons/:id', (request, response, next) => {
     Person.findByIdAndDelete(request.params.id)
@@ -44,7 +46,7 @@ app.put("/api/persons/:id", (request, response) => {
         })
     }
     const exist = Person.findById(request.params.id).then(result)
-    if (exist) {
+    if (result) {
         console.log("user already found")
         response.json({
             error: "user already in phonebook"
