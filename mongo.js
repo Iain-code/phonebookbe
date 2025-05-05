@@ -13,13 +13,13 @@ mongoose
     console.log('error connecting to MongoDB:', error.message)
   })
 
-if (process.argv.length === 2) {
+if (process.argv.length === 3) {
 
-Person.find({}).then(result => {
-    result.forEach(person => {
-        console.log(person)
+    Person.find({}).then(result => {
+        result.forEach(person => {
+            console.log(person)
+        })
     })
-})
 }
 
 if (process.argv.length === 5) {
