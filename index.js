@@ -1,6 +1,7 @@
 const express = require("express")
 const logger = require('morgan');
 const cors = require('cors')
+const Person = require("./models/Persons")
 
 const app = express()
 app.use(cors());
@@ -11,7 +12,7 @@ const now = new Date()
 app.use(express.json())
 
 app.get("/api/persons", (request, response) => {
-    Persons.find({}).then(people => {
+    Person.find({}).then(people => {
         response.json(people)
     })
 })
