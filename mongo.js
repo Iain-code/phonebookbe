@@ -6,7 +6,7 @@ if (process.argv.length < 3) {
     process.exit(1);
 }
 
-const password = process.argv[2]
+const password = "disturbed9"
 const dbUrl = `mongodb+srv://iainv1010:${password}@cluster0.kphy92i.mongodb.net/phonebook?retryWrites=true&w=majority&appName=Cluster0`;
 
 mongoose

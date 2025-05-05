@@ -3,6 +3,7 @@ const express = require("express")
 const logger = require('morgan');
 const cors = require('cors')
 const Person = require("./models/Persons");
+const mongo = require("./mongo")
 
 const app = express()
 app.use(cors());
