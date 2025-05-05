@@ -3,14 +3,27 @@ const express = require("express")
 const logger = require('morgan');
 const cors = require('cors')
 const Person = require("./models/Persons");
+const connectDB = require("./mongo")
 
 const app = express()
 app.use(cors());
 app.use(express.static('dist'))
 app.use(logger('tiny'));
+app.use(express.json())
+
+const password = process.argv[2]
+const dbUrl = `mongodb+srv://iainv1010:${password}@cluster0.kphy92i.mongodb.net/phonebook?retryWrites=true&w=majority&appName=Cluster0`;
+connectDB(dbUrl)
+  .then(() => {
+    console.log('Connected to MongoDB');
+    // Do other startup tasks like starting your server...
+  })
+  .catch((error) => {
+    console.error('Could not connect to MongoDB', error);
+    process.exit(1);
+  });
 
 const now = new Date()
-app.use(express.json())
 
 app.get("/api/persons", (request, response) => {
     Person.find({}).then(results => {
