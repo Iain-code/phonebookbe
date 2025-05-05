@@ -7,7 +7,7 @@ if (process.argv.length < 3) {
 }
 
 const password = process.argv[2]
-const dbUrl = `mongodb+srv://iainv1010:${password}@cluster0.kphy92i.mongodb.net/phonebook?retryWrites=true&w=majority&appName=Cluster0`;
+const dbUrl = `mongodb+srv://iainv1010:${password}@cluster0.kphy92i.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`;
 
 mongoose
   .connect(dbUrl)
@@ -18,17 +18,12 @@ mongoose
     console.log('error connecting to MongoDB:', error.message)
   })
 
-const personSchema = new mongoose.Schema({
-    name: String,
-    number: String,
-})
-
 if (process.argv.length === 3) {
 
 Person.find({}).then(result => {
     result.forEach(person => {
         console.log(person)
-})
+    })
 })
 }
 
