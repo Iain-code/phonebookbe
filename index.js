@@ -18,10 +18,17 @@ app.get("/api/persons", (request, response) => {
         results.forEach(result => {
             response.json(result)
             console.log(result)
-        })  
-    mongoose.connection.close()
+        })
     })
 })
+
+app.delete('/api/notes/:id', (request, response, next) => {
+    Note.findByIdAndDelete(request.params.id)
+      .then((result) => {
+        response.status(204).end()
+      })
+      .catch((error) => next(error))
+  })
 
 app.get("/api/persons/:id", (request, response) => {
     const foundPerson = persons.find(person => person.id === request.params.id)
@@ -34,18 +41,6 @@ app.get("/api/persons/:id", (request, response) => {
         })
     } else {
     response.json(foundPerson)
-    }
-})
-
-app.delete("/api/persons/:id", (request, response) => {
-    const id = request.params.id
-    const originalLength = persons.length;
-    persons = persons.filter((person) => person.id.toString() !== id)
-    
-    if (persons.length < originalLength) {
-        response.status(204).end(); // Successfully deleted
-    } else {
-        response.status(404).json({error: "Person not found"}); // No person found with that ID
     }
 })
 
