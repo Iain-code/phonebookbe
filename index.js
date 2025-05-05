@@ -10,13 +10,6 @@ app.use(express.static('dist'))
 app.use(logger('tiny'));
 app.use(express.json())
 
-const password = process.argv[2]
-const dbUrl = `mongodb+srv://iainv1010:${password}@cluster0.kphy92i.mongodb.net/phonebook?retryWrites=true&w=majority&appName=Cluster0`;
-connectDB(dbUrl)
-  .then(() => {
-    console.log('Connected to MongoDB');
-  })
-
 const now = new Date()
 
 app.get("/api/persons", (request, response) => {
