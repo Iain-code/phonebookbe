@@ -71,7 +71,7 @@ app.put("/api/persons/:id", (request, response, next) => {
     Person.findByIdAndUpdate(id, updatedPerson, { new: true, runValidators: true })
     .then((result) => {
       if (result) {
-        response.status(200).json({result})
+        response.status(200).send("Updated successfully")
       } else {
         response.status(404).json({
           error: "malformed ID"
