@@ -46,21 +46,20 @@ app.put("/api/persons/:id", (request, response) => {
             error: "no content found"
         })
     }
-    const exist = Person.findById(request.params.id).then(result)
-    if (result) {
-        console.log("user already found")
-        response.json({
-            error: "user already in phonebook"
-        })
-    } else {
     const addedPerson = {
-        id: id,
-        name: body.name,
-        number: body.number
+      id: id,
+      name: body.name,
+      number: body.number
     }
-    response.status(200).json(addedPerson)
-}
-})
+    Person.findByIdAndUpdate(id, addedPerson).then((result) => {
+      response.status(200).json({result})
+    })
+    .catch(error => {
+      response.status(400).json({
+        error: `failed to update ${addedPerson.name}`
+      })
+      })
+    })
 
 app.post("/api/persons", (request, response) => {
     
