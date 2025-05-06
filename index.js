@@ -13,32 +13,49 @@ app.use(express.json())
 
 const now = new Date()
 
-app.get('/api/persons', (req, res) => {
+app.get('/api/persons', (request, response, next) => {
     Person.find({})
       .then(results => {
-        res.json(results);
+        if (results) {
+          response.json(results)
+        } else {
+          response.status(404).json({
+            error: "could not GET persons"
+          })
+        }
       })
-      .catch(error => {
-        console.error('Error fetching persons:', error);
-        res.status(500).json({ error: 'Internal Server Error' });
-      });
-  });
+      .catch(error => next(error))
+      })
 
 app.delete('/api/persons/:id', (request, response, next) => {
     Person.findByIdAndDelete(request.params.id)
       .then((result) => {
-        response.status(204).end()
+        if (result) {
+          response.json({result})
+        } else {
+          response.status(404).json({
+            error: "failed to delete"
+          })
+        }
       })
+      .catch(error => next(error))
   })
 
-app.get("/api/persons/:id", (request, response) => {
+app.get("/api/persons/:id", (request, response, next) => {
     Person.findById(request.params.id)
       .then((result) => {
-        response.status(200).end()
-      })    
+        if (result) {
+          response.status(200).end()
+        } else {
+          response.status(404).json({
+            error: "failed to get person"
+          })
+        }
+      })
+      .catch(error => next(error))
 })
 
-app.put("/api/persons/:id", (request, response) => {
+app.put("/api/persons/:id", (request, response, next) => {
     const body = request.body
     const id = request.params.id
     if (!body.name || !body.number) {
@@ -52,16 +69,18 @@ app.put("/api/persons/:id", (request, response) => {
       number: body.number
     })
     Person.findByIdAndUpdate(id, addedPerson).then((result) => {
-      response.status(200).json({result})
-    })
-    .catch(error => {
-      response.status(400).json({
-        error: `failed to update ${addedPerson.name}`
+      if (result) {
+        response.status(200).json({result})
+      } else {
+        response.status(404).json({
+          error: "malformed ID"
+        })
+      }
       })
-      })
+      .catch(error => next(error))
     })
 
-app.post("/api/persons", (request, response) => {
+app.post("/api/persons", (request, response, next) => {
     
     const body = request.body
     if (!body.name || !body.number) {
@@ -76,7 +95,21 @@ app.post("/api/persons", (request, response) => {
     addedPerson.save().then(savedPerson => {
         response.json(savedPerson)
     })
+    .catch(error => next(error))
 });
+
+const errorHandler = (error, request, response, next) => {
+  console.error(error.message)
+
+  if (error.name === 'CastError') {
+    return response.status(400).send({ error: 'malformatted id' })
+  } 
+
+  next(error)
+}
+
+// this has to be the last loaded middleware, also all the routes should be registered before this!
+app.use(errorHandler)
 
 const PORT = process.env.PORT || 3001
 app.listen(PORT, () => {
