@@ -78,7 +78,7 @@ app.put("/api/persons/:id", (request, response, next) => {
       }
       })
       .catch(error => next(error))
-      console.log(error)
+      console.log(`This is my console.log ${error}`)
     })
 
 app.post("/api/persons", (request, response, next) => {
