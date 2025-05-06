@@ -42,10 +42,11 @@ app.delete('/api/persons/:id', (request, response, next) => {
   })
 
 app.get("/api/persons/:id", (request, response, next) => {
+    console.log("Finding individual person...")
     Person.findById(request.params.id)
       .then((result) => {
         if (result) {
-          response.status(200).end()
+          response.status(200).json(result)
         } else {
           response.status(404).json({
             error: "failed to get person"
