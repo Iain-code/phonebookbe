@@ -46,11 +46,11 @@ app.put("/api/persons/:id", (request, response) => {
             error: "no content found"
         })
     }
-    const addedPerson = {
+    const addedPerson = new Person ({
       id: id,
       name: body.name,
       number: body.number
-    }
+    })
     Person.findByIdAndUpdate(id, addedPerson).then((result) => {
       response.status(200).json({result})
     })
