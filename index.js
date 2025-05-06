@@ -63,12 +63,13 @@ app.put("/api/persons/:id", (request, response, next) => {
             error: "no content found"
         })
     }
-    const addedPerson = new Person ({
-      id: id,
+    const updatedPerson = {
       name: body.name,
       number: body.number
-    })
-    Person.findByIdAndUpdate(id, addedPerson).then((result) => {
+    };
+
+    Person.findByIdAndUpdate(id, updatedPerson, { new: true, runValidators: true })
+    .then((result) => {
       if (result) {
         response.status(200).json({result})
       } else {
@@ -77,8 +78,10 @@ app.put("/api/persons/:id", (request, response, next) => {
         })
       }
       })
-      .catch(error => next(error))
-      console.log(`This is my console.log ${error}`)
+      .catch(error => {
+        console.log(`This is my console.log ${error}`)
+        next(error)
+      })
     })
 
 app.post("/api/persons", (request, response, next) => {
