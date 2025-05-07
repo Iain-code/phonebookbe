@@ -1,6 +1,6 @@
 require('dotenv').config()
 const mongoose = require('mongoose')
-const Person = require('./models/Persons')
+const Person = require('./models/Person')
 
 const dbUrl = process.env.DBURL
 console.log('DB URL:', process.env.DB_URL)
