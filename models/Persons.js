@@ -3,14 +3,11 @@ const mongoose = require('mongoose')
 mongoose.set('strictQuery', false);
 
 function validatorFunc(item) {
-   if (item[2] === "-" || item[3] === "-" && !isNaN(parseInt(item[4]))) {
-    return true
-   } else {
-    return false
-   }
-}  
+  return (
+    (item[2] === "-" || item[3] === "-") && !isNaN(parseInt(item[4]))
+)}
 
-const validationMessage = [validatorFunc, "Incorrect input value"]
+const validationMessage = "Incorrect input value"
 
 const personSchema = new mongoose.Schema({
     name: {
