@@ -10,7 +10,7 @@ function validatorFunc(item) {
    }
 }  
 
-const validatorFunc = [validatorFunc, "Incorrect input value"]
+const validationMessage = [validatorFunc, "Incorrect input value"]
 
 const personSchema = new mongoose.Schema({
     name: {
@@ -20,7 +20,10 @@ const personSchema = new mongoose.Schema({
     },
     number: {
       type: String,
-      validate: validatorFunc,
+      validate: {
+        validator: validatorFunc,
+        message: validationMessage
+      },
       minlength: 8,
       required: true,
     },
