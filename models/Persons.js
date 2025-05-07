@@ -2,6 +2,16 @@ const mongoose = require('mongoose')
 
 mongoose.set('strictQuery', false);
 
+function validatorFunc(item) {
+   if (item[2] === "-" || item[3] === "-" && item[4] === Number) {
+    return true
+   } else {
+    return false
+   }
+}  
+
+const validatorFunc = [validatorFunc, "Incorrect input value"]
+
 const personSchema = new mongoose.Schema({
     name: {
       type: String,
@@ -10,7 +20,9 @@ const personSchema = new mongoose.Schema({
     },
     number: {
       type: String,
-      required: true
+      validate: validatorFunc,
+      minlength: 8,
+      required: true,
     },
 }, { collection: 'people' })
 
