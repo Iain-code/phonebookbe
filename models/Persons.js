@@ -1,29 +1,29 @@
 const mongoose = require('mongoose')
 
-mongoose.set('strictQuery', false);
+mongoose.set('strictQuery', false)
 
 function validatorFunc(item) {
   return (
-    (item[2] === "-" || item[3] === "-") && !isNaN(parseInt(item[4]))
-)}
+    (item[2] === '-' || item[3] === '-') && !isNaN(parseInt(item[4]))
+  )}
 
-const validationMessage = "Incorrect input value"
+const validationMessage = 'Incorrect input value'
 
 const personSchema = new mongoose.Schema({
-    name: {
-      type: String,
-      minlength: 3,
-      required: true
+  name: {
+    type: String,
+    minlength: 3,
+    required: true
+  },
+  number: {
+    type: String,
+    validate: {
+      validator: validatorFunc,
+      message: validationMessage
     },
-    number: {
-      type: String,
-      validate: {
-        validator: validatorFunc,
-        message: validationMessage
-      },
-      minlength: 8,
-      required: true,
-    },
+    minlength: 8,
+    required: true,
+  },
 }, { collection: 'people' })
 
 personSchema.set('toJSON', {
@@ -34,6 +34,6 @@ personSchema.set('toJSON', {
   }
 })
 
-const Person = mongoose.model("Person", personSchema)
+const Person = mongoose.model('Person', personSchema)
 
 module.exports = Person
