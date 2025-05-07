@@ -18,5 +18,10 @@
     "mongoose": "^8.14.1",
     "mongosh": "^2.5.0",
     "morgan": "^1.10.0"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.26.0",
+    "eslint": "^9.26.0",
+    "globals": "^16.1.0"
   }
 }
