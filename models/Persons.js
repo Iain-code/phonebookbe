@@ -3,7 +3,7 @@ const mongoose = require('mongoose')
 mongoose.set('strictQuery', false);
 
 function validatorFunc(item) {
-   if (item[2] === "-" || item[3] === "-" && item[4] === Number) {
+   if (item[2] === "-" || item[3] === "-" && !isNaN(parseInt(item[4]))) {
     return true
    } else {
     return false
